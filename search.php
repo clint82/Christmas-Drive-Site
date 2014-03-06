@@ -67,7 +67,9 @@
                 } 
             }
             $dba = new database_acessor();
-            $wordToSearchFor = $_POST['searchBox'];
+            print_r($_GET);
+            print_r($_POST);
+            $wordToSearchFor = $_GET["searchBox"];
             $result = $dba->search_for_name($wordToSearchFor);
             if(count($result) > 0)
             {
@@ -81,6 +83,8 @@
                     echo $person->firstName;
                     echo " ";
                     echo $person->lastName;
+                    echo " email: ";
+                    echo $person->email;
                     echo "</option>";
                 }
                 echo "</select><br>";
