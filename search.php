@@ -61,15 +61,17 @@
                 public function search_for_name($name_to_search_for)
                 {
                     $statement_string = $this->name_search_string;
-                    $returner = $this->make_statement($statement_string, array("Name"));
+                    $returner = $this->make_statement($statement_string, array($name_to_search_for));
                     $this->end_statement();
                     return $returner;
                 } 
             }
             $dba = new database_acessor();
-            $result = $dba->search_for_name("Name");
+            $wordToSearchFor = $_POST['searchBox'];
+            $result = $dba->search_for_name($wordToSearchFor);
             if(count($result) > 0)
             {
+                echo "<form  name='selectPerson' action='signUpPerson.php' method='POST' enctype='application/x-www-form-urlencoded'>";
                 echo "<select name='householdStatus'>";
                 foreach($result as $person)
                 {
@@ -82,6 +84,8 @@
                     echo "</option>";
                 }
                 echo "</select><br>";
+                echo "<input type='submit'>";
+                echo "</form>";
             }
             else
             {
