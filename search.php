@@ -67,8 +67,6 @@
                 } 
             }
             $dba = new database_acessor();
-            print_r($_GET);
-            print_r($_POST);
             $wordToSearchFor = $_GET["searchBox"];
             $result = $dba->search_for_name($wordToSearchFor);
             if(count($result) > 0)
@@ -93,7 +91,7 @@
             }
             else
             {
-                echo "no results found";
+                echo "no results found for " . $wordToSearchFor;
             }
         ?>
     </body>
