@@ -13,7 +13,8 @@ PRIMARY KEY(id)
 );
 
 #Will insert a default person to just add addresses without having a  head of household
-INSERT INTO PersonOrdering (firstName, lastName, email) VALUES ("No", "Name", "");
+INSERT INTO PersonOrdering (firstName, lastName, email) VALUES ("No", "Name", "ddd");
+INSERT INTO PersonOrdering (firstName, lastName, email) VALUES ("Other", "Name", "ff");
 
 #Every house will have an address, and a head of household (default is no one)
 CREATE TABLE House
