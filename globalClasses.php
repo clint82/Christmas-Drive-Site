@@ -14,6 +14,8 @@
         private $dbName = "Christmas";
         private $nameQueryString = "SELECT * FROM PersonOrdering p WHERE p.lastName LIKE ?";
         private $addFullPersonString = "INSERT INTO PersonOrdering (firstName, lastName, email, primaryPhoneId, primaryPhoneNum, secondaryPhoneId, secondaryPhoneNum, languageId) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
+        private $addLanguageString = "INSERT INTO Language (languageName) VALUES (?);";
+        private $languageQueryString = "SELECT * FROM Language";
         private $hostname;
         private $mySqlConnection;
         private $preparedStatement;
@@ -46,7 +48,7 @@
             
             $preparedStatement->execute($params);
             
-            $result = $preparedStatement->fetchAll(PDO::FETCH_CLASS, "PersonOrdering");
+            $result = $preparedStatement->fetchAll(PDO::FETCH_CLASS);
             
             return $result;
         }
@@ -86,19 +88,30 @@
         
         public function searchForName($nameToSearchFor)
         {
-            $statementString = $this->nameQueryString;
-            $returner = $this->makeStatementSelect($statementString, array($nameToSearchFor));
+            $returner = $this->makeStatementSelect($this->nameQueryString, array($nameToSearchFor));
             $this->endStatement();
             return $returner;
         } 
         
         public function addPerson($params)
         {
-            $statementString = $this->addFullPersonString;
             $returner = $this->makeStatementInsert($this->addFullPersonString, $params);
             $this->endStatement();
             return $returner;
-            //$returner = $this->makeStatementSelect($statementString, $params);
+        }
+        
+        public function getLanguages()
+        {
+            $returner = $this->makeStatementSelect($this->languageQueryString, array());
+            $this->endStatement();
+            return $returner;
+        }
+        
+        public function addLanguages($language)
+        {
+            $returner = $this->makeStatementInsert($this->addLanguageString, $language);
+            $this->endStatement();
+            return $returner;
         }
     }
 ?>
