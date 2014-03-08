@@ -2,9 +2,9 @@
     <body>
         <?php
             require 'globalClasses.php';
-            $dba = new database_acessor();
+            $dba = new databaseAcessor();
             $wordToSearchFor = $_GET["searchBox"];
-            $result = $dba->search_for_name($wordToSearchFor);
+            $result = $dba->searchForName($wordToSearchFor);
             if(count($result) > 0)
             {
                 echo "<form  name='selectPerson' action='signUpPerson.php' method='POST' enctype='application/x-www-form-urlencoded'>";

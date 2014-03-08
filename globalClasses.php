@@ -7,7 +7,7 @@
         public $email;
     }
 
-    class database_acessor
+    class databaseAcessor
     {
         private $username = "root";
         private $password = "password";
@@ -15,21 +15,21 @@
         private $nameQueryString = "SELECT * FROM PersonOrdering p WHERE p.lastName LIKE ?";
         private $addFullPersonString = "INSERT INTO PersonOrdering (firstName, lastName, email, primaryPhoneId, primaryPhoneNum, secondaryPhoneId, secondaryPhoneNum, languageId) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
         private $hostname;
-        private $my_sql_connection;
-        private $prepared_statement;
+        private $mySqlConnection;
+        private $preparedStatement;
         
         public function __construct()
         {
             $this->hostname = gethostname();
         }
         
-        private function makeStatementSelect($statement_string, $params)
+        private function makeStatementSelect($statementString, $params)
         {
-            $connecting_name = 'mysql:host='. $this->hostname . ';dbname=' . $this->dbName;
+            $connectingName = 'mysql:host='. $this->hostname . ';dbname=' . $this->dbName;
             
             try
             {
-                $my_sql_connection = new PDO($connecting_name,$this->username,$this->password); 
+                $mySqlConnection = new PDO($connectingName,$this->username,$this->password); 
             }
             catch(PDOException $e)
             {
@@ -37,27 +37,27 @@
                 echo $e->getMessage();
             }
             
-            if($my_sql_connection->connect_error)
+            if($mySqlConnection->connect_error)
             {
-                die('Could not connect: ' . $my_sql_connection->connect_error);
+                die('Could not connect: ' . $mySqlConnection->connect_error);
             }
             
-            $prepared_statement = $my_sql_connection->prepare($statement_string, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+            $preparedStatement = $mySqlConnection->prepare($statementString, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
             
-            $prepared_statement->execute($params);
+            $preparedStatement->execute($params);
             
-            $result = $prepared_statement->fetchAll(PDO::FETCH_CLASS, "PersonOrdering");
+            $result = $preparedStatement->fetchAll(PDO::FETCH_CLASS, "PersonOrdering");
             
             return $result;
         }
         
-        private function makeStatementInsert($statement_string, $params)
+        private function makeStatementInsert($statementString, $params)
         {
-            $connecting_name = 'mysql:host='. $this->hostname . ';dbname=' . $this->dbName;
+            $connectingName = 'mysql:host='. $this->hostname . ';dbname=' . $this->dbName;
             
             try
             {
-                $my_sql_connection = new PDO($connecting_name,$this->username,$this->password); 
+                $mySqlConnection = new PDO($connectingName,$this->username,$this->password); 
             }
             catch(PDOException $e)
             {
@@ -65,30 +65,30 @@
                 echo $e->getMessage();
             }
             
-            if($my_sql_connection->connect_error)
+            if($mySqlConnection->connect_error)
             {
-                die('Could not connect: ' . $my_sql_connection->connect_error);
+                die('Could not connect: ' . $mySqlConnection->connect_error);
             }
             
-            $prepared_statement = $my_sql_connection->prepare($statement_string);
+            $preparedStatement = $mySqlConnection->prepare($statementString);
             
-            $prepared_statement->execute($params);
+            $preparedStatement->execute($params);
             
-            $result = $my_sql_connection->lastInsertId();
+            $result = $mySqlConnection->lastInsertId();
             
             return $result;
         }
         
-        private function end_statement()
+        private function endStatement()
         {
-            $this->my_sql_connection = null;
+            $this->mySqlConnection = null;
         }
         
-        public function search_for_name($name_to_search_for)
+        public function searchForName($nameToSearchFor)
         {
-            $statement_string = $this->nameQueryString;
-            $returner = $this->makeStatementSelect($statement_string, array($name_to_search_for));
-            $this->end_statement();
+            $statementString = $this->nameQueryString;
+            $returner = $this->makeStatementSelect($statementString, array($nameToSearchFor));
+            $this->endStatement();
             return $returner;
         } 
         
@@ -96,7 +96,7 @@
         {
             $statementString = $this->addFullPersonString;
             $returner = $this->makeStatementInsert($this->addFullPersonString, $params);
-            $this->end_Statement();
+            $this->endStatement();
             return $returner;
             //$returner = $this->makeStatementSelect($statementString, $params);
         }

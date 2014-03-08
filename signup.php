@@ -2,7 +2,7 @@
     <body>
         <?php
             require 'globalClasses.php';
-            $dba = new database_acessor();
+            $dba = new databaseAcessor();
             
             $firstName = $_POST["firstName"];
             $lastName = $_POST["lastName"];
