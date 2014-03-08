@@ -40,4 +40,12 @@ function highlightNameBoxIfNotValidated(idString)
     else changeElementColor(element, 'white');
 }
 
+function addTextBoxIfUnselected(item)
+{
+    if(item.value == "other")
+    {
+        document.getElementById("otherLanguageDiv").style.visibility ="visible";
+    }
+}
+
 

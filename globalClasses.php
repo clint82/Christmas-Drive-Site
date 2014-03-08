@@ -74,7 +74,21 @@
             
             $preparedStatement = $mySqlConnection->prepare($statementString);
             
-            $preparedStatement->execute($params);
+            if(empty($params))
+            {
+                $returnSucess = $preparedStatement->execute();
+            }
+            else
+            {
+                $returnSucess = $preparedStatement->execute($params);
+            }
+            
+            if(!$returnSucess)
+            {
+                echo "<br>insert failed for ";
+                print_r($params);
+                echo "<br>";
+            }
             
             $result = $mySqlConnection->lastInsertId();
             
@@ -107,8 +121,9 @@
             return $returner;
         }
         
-        public function addLanguages($language)
+        public function addLanguage($language)
         {
+            echo $this->addLanguageString;
             $returner = $this->makeStatementInsert($this->addLanguageString, $language);
             $this->endStatement();
             return $returner;

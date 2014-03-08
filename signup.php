@@ -13,8 +13,19 @@
             $secondaryPhoneNum = $_POST["secondaryPhoneNum"];
             $languageId = $_POST["languagesSpoken"];
             
+            if($languageId == "other")
+            {
+                echo "yay works";
+                $otherLanguageToAdd = $_POST['otherLanguage'];
+                echo $otherLanguageToAdd;
+                echo $dba->addLanguage($otherLanguageToAdd);
+            }
+            
+            //add person
             $arrayOfValues = array($firstName, $lastName, $email, $primaryPhoneId, $primaryPhoneNum, $secondaryPhoneId, $secondaryPhoneNum, $languageId);
             echo $dba->addPerson($arrayOfValues);
+            
+            //add language
         ?>
     <body>
 </html>
