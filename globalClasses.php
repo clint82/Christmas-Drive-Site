@@ -46,7 +46,22 @@
             
             $preparedStatement = $mySqlConnection->prepare($statementString, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
             
-            $preparedStatement->execute($params);
+            if(empty($params))
+            {
+                $returnSucess = $preparedStatement->execute();
+            }
+            else
+            {
+                $returnSucess = $preparedStatement->execute($params);
+            }
+            
+            if(!$returnSucess)
+            {
+                echo "<br>insert failed for ";
+                print_r($params);
+                print_r($mySqlConnection->errorInfo());
+                echo "<br>";
+            }
             
             $result = $preparedStatement->fetchAll(PDO::FETCH_CLASS);
             
@@ -87,6 +102,7 @@
             {
                 echo "<br>insert failed for ";
                 print_r($params);
+                print_r($mySqlConnection->errorInfo());
                 echo "<br>";
             }
             
@@ -123,8 +139,7 @@
         
         public function addLanguage($language)
         {
-            echo $this->addLanguageString;
-            $returner = $this->makeStatementInsert($this->addLanguageString, $language);
+            $returner = $this->makeStatementInsert($this->addLanguageString, array($language));
             $this->endStatement();
             return $returner;
         }
