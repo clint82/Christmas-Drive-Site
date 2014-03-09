@@ -48,4 +48,25 @@ function addTextBoxIfUnselected(item)
     }
 }
 
+function setAction(element, action)
+{
+    element.action = action;
+}
 
+function chooseOption()
+{
+    var selection = document.getElementById("selectNameAction").value;
+    var formElement = document.getElementById("selectPerson");
+    if(selection == "makeClothingOrToyOrder")
+    {
+        setAction(formElement, "addToyOrClothingOrder.php");
+    }
+    if(selection == "makeFoodOrder")
+    {
+        setAction(formElement, "addFoodOrder.php");
+    }
+    else if(selection == "editInfo")
+    {
+        setAction(formElement, "editInfo.php");
+    }
+}

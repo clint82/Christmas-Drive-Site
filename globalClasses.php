@@ -15,7 +15,7 @@
         private $nameQueryString = "SELECT * FROM PersonOrdering p WHERE p.lastName LIKE ?";
         private $addFullPersonString = "INSERT INTO PersonOrdering (firstName, lastName, email, primaryPhoneId, primaryPhoneNum, secondaryPhoneId, secondaryPhoneNum, languageId) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
         private $addLanguageString = "INSERT INTO Language (languageName) VALUES (?);";
-        private $languageQueryString = "SELECT * FROM Language";
+        private $languageQueryString = "SELECT * FROM Language  ORDER BY languageName";
         private $hostname;
         private $mySqlConnection;
         private $preparedStatement;
