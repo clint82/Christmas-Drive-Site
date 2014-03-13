@@ -114,6 +114,20 @@ CREATE TABLE Addresses
     CONSTRAINT validAddress UNIQUE (houseNumber, streetName, city, zipCode)
 );
 
+#default address
+INSERT IGNORE INTO Addresses (houseNumber, streetName, city, zipCode)
+VALUES ("No", "Address", "Assigned", "here");
+
+#this represents people in houses (it can be one person to a house if there is a performance issue)
+CREATE TABLE peopleInHouse 
+(
+    pid INT,
+    aid INT,
+    #PRIMARY KEY(pid)
+    FOREIGN KEY (pid) REFERENCES PersonOrdering(id),
+    FOREIGN KEY (aid) REFERENCES Addresses(aid)
+);
+
 INSERT IGNORE INTO Addresses (houseNumber, streetName, city, zipCode)
 VALUES ("a", "b", "c", "d");
 

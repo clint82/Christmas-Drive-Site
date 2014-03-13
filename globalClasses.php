@@ -16,6 +16,7 @@
         private $addFullPersonString = "INSERT INTO PersonOrdering (firstName, lastName, email, primaryPhoneId, primaryPhoneNum, secondaryPhoneId, secondaryPhoneNum, languageId) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
         private $addLanguageString = "INSERT INTO Language (languageName) VALUES (?);";
         private $languageQueryString = "SELECT * FROM Language  ORDER BY languageName";
+        private $addressAddingString = "INSERT IGNORE INTO Addresses (houseNumber, streetName, city, zipCode)VALUES (?, ?, ?, ?)";
         private $hostname;
         private $mySqlConnection;
         private $preparedStatement;
@@ -140,6 +141,13 @@
         public function addLanguage($language)
         {
             $returner = $this->makeStatementInsert($this->addLanguageString, array($language));
+            $this->endStatement();
+            return $returner;
+        }
+        
+        public function addAddress($params)
+        {
+            $returner = $this->makeStatementInsert($this->addressAddingString, $params);
             $this->endStatement();
             return $returner;
         }
