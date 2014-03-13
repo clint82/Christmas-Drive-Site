@@ -101,3 +101,23 @@ CREATE TABLE ClothingOrders
     FOREIGN KEY(orderedById) REFERENCES PersonOrdering(id),
     FOREIGN KEY(orderedForId) REFERENCES Childeren(cid)
 );
+
+#this stores unique addresses with int primary keys for quick linking
+CREATE TABLE Addresses
+(
+    aid INT NOT NULL AUTO_INCREMENT,
+    houseNumber VARCHAR(5) NOT NULL,
+    streetName  VARCHAR(20) NOT NULL,
+    city        VARCHAR(20) NOT NULL,
+    zipCode     VARCHAR(12) NOT NULL,
+    PRIMARY KEY (aid), 
+    CONSTRAINT validAddress UNIQUE (houseNumber, streetName, city, zipCode)
+);
+
+INSERT IGNORE INTO Addresses (houseNumber, streetName, city, zipCode)
+VALUES ("a", "b", "c", "d");
+
+INSERT IGNORE INTO Addresses (houseNumber, streetName, city, zipCode)
+VALUES ("a", "b", "c", "d");
+
+SELECT * FROM Addresses;
