@@ -49,32 +49,6 @@ CREATE TABLE PersonOrdering
 INSERT INTO PersonOrdering (firstName, lastName, email) VALUES ("No", "Name", "ddd");
 INSERT INTO PersonOrdering (firstName, lastName, email) VALUES ("Other", "Name", "ff");
 
-#Every house will have an address, and a head of household (default is no one)
-CREATE TABLE House
-(
-    id INT NOT NULL AUTO_INCREMENT,
-    address VARCHAR(40),
-    PRIMARY KEY (id)
-);
-
-#Can be primary key if performance is an issue
-CREATE TABLE HeadOfHousehold
-(
-    hid INT,
-    pid INT,
-    FOREIGN KEY (hid) REFERENCES House(id),
-    FOREIGN KEY (pid) REFERENCES PersonOrdering(id)
-);
-
-CREATE TABLE LivesIn
-(
-    pid INT,
-    hid INT,
-    PRIMARY KEY(pid),
-    FOREIGN KEY (hid) REFERENCES House(id),
-    FOREIGN KEY (pid) REFERENCES PersonOrdering(id)
-);
-
 #Not sure if primaryGaurdianId should not be added for flexibility by admins, will have today as birthday by default
 CREATE TABLE Childeren
 (
@@ -106,8 +80,8 @@ CREATE TABLE ClothingOrders
 CREATE TABLE Addresses
 (
     aid INT NOT NULL AUTO_INCREMENT,
-    houseNumber VARCHAR(5) NOT NULL,
-    streetName  VARCHAR(20) NOT NULL,
+    houseNumber VARCHAR(10) NOT NULL,
+    streetName  VARCHAR(30) NOT NULL,
     city        VARCHAR(20) NOT NULL,
     zipCode     VARCHAR(12) NOT NULL,
     PRIMARY KEY (aid), 
@@ -128,10 +102,11 @@ CREATE TABLE peopleInHouse
     FOREIGN KEY (aid) REFERENCES Addresses(aid)
 );
 
-INSERT IGNORE INTO Addresses (houseNumber, streetName, city, zipCode)
-VALUES ("a", "b", "c", "d");
-
-INSERT IGNORE INTO Addresses (houseNumber, streetName, city, zipCode)
-VALUES ("a", "b", "c", "d");
-
-SELECT * FROM Addresses;
+#Can be primary key if performance is an issue
+CREATE TABLE HeadOfHousehold
+(
+    hid INT,
+    pid INT,
+    FOREIGN KEY (hid) REFERENCES Addresses(aid),
+    FOREIGN KEY (pid) REFERENCES PersonOrdering(id)
+);
