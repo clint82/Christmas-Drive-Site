@@ -46,6 +46,10 @@ function addTextBoxIfUnselected(item)
     {
         document.getElementById("otherLanguageDiv").style.visibility ="visible";
     }
+    else 
+    {
+        document.getElementById("otherLanguageDiv").style.visibility ="hidden";
+    }
 }
 
 function setAction(element, action)

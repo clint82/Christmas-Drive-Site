@@ -12,6 +12,7 @@
         private $addressAddingString = "INSERT IGNORE INTO Addresses (houseNumber, streetName, city, zipCode) VALUES (?, ?, ?, ?)";
         private $findAddedAddressString = "SELECT * FROM Addresses WHERE (houseNumber, streetName, city, zipCode) = (?, ?, ?, ?) LIMIT 1";
         private $getColumnMaxStringLength = "SELECT CHARACTER_MAXIMUM_LENGTH FROM INFORMATION_SCHEMA.COLUMNS WHERE (table_name, COLUMN_NAME) = (?, ?)";
+        private $addPersonToHousehold = "INSERT INTO peopleInHouse (pid,aid) VALUES (?,?)";
         private $getAllTables = "SHOW TABLES FROM Christmas";
         private $hostname;
         private $mySqlConnection;
@@ -224,6 +225,11 @@
                 return $address->aid;
             }
             return $returner;
+        }
+        
+        public function addPersonToHouse($person, $address)
+        {
+            $this->makeStatementInsert($this->addPersonToHousehold, array($person, $address));
         }
     }
 ?>
