@@ -6,5 +6,6 @@
     $params[] = $_POST["locality"];
     $params[] = $_POST["postal_code"];
     $dba = new databaseAcessor();
-    $dba->addAddress($params);
+    $addressKey = $dba->addAddress($params);
+    echo $addressKey;
 ?>

@@ -21,21 +21,15 @@
         public function __construct()
         {
             $this->hostname = gethostname();
-            $this->maxStringLengths = array();
-            //should replace with something more automatic
-            $this->addressLengths["houseNumber"] = 10;
-            $this->addressLengths["streetName"] = 30;
-            $this->addressLengths["city"] = 20;
-            $this->addressLengths["zipCode"] = 12;
             
             //manually storing max string lengths (performance will be affected)
             $this->maxStringLengths = array();
             
             $this->maxStringLengths["Addresses"] = array();
-            $this->maxStringLengths["Addresses"]["houseNumber"];
-            $this->maxStringLengths["Addresses"]["streetName"];
-            $this->maxStringLengths["Addresses"]["city"];
-            $this->maxStringLengths["Addresses"]["zipCode"];
+            $this->maxStringLengths["Addresses"][0] = 10;
+            $this->maxStringLengths["Addresses"][1] = 30;
+            $this->maxStringLengths["Addresses"][2] = 20;
+            $this->maxStringLengths["Addresses"][3] = 12;
             
             $this->maxStringLengths["Childeren"] = array();
             $this->maxStringLengths["Childeren"]["firstName"] = 20;
@@ -65,6 +59,7 @@
             
         }
         
+        //returns array of classes as result
         private function makeStatementSelect($statementString, $params = array())
         {
             $connectingName = 'mysql:host='. $this->hostname . ';dbname=' . $this->dbName;
@@ -107,6 +102,7 @@
             return $result;
         }
         
+        //returns id of inserted element
         private function makeStatementInsert($statementString, $params)
         {
             $connectingName = 'mysql:host='. $this->hostname . ';dbname=' . $this->dbName;
@@ -150,6 +146,31 @@
             return $result;
         }
         
+        //returns the aprameters with the lengths trimmed
+        private function trimParameters($params, $tableName)
+        {
+            $trimmingLengths = $this->maxStringLengths[$tableName];
+            print_r($trimmingLengths);
+            foreach($params as $key=>$val)
+            {
+                //echo "key is : ".$key."<br>";
+                //echo "val is : ".$val."<br>";
+                //echo "trimmingLengths = ".$trimmingLengths[$key]."<br>";
+                //echo "strlen(val) = ".strlen($val)."<br>";
+                //echo is_string($val);
+                //print_r($trimmingLengths[$key]);
+                
+                if(is_string($val) && strlen($val) > $trimmingLengths[$key])
+                {
+                    //echo strlen($val) . "\n";
+                    //echo $trimmingLengths[$key];
+                    //echo "trimming ".$params[$key]." to ".substr($val, 0, $trimmingLengths[$key])."<br>";
+                    $params[$key] = substr($val, 0, $trimmingLengths[$key]);
+                }
+            }
+            return $params;
+        }
+        
         private function endStatement()
         {
             $this->mySqlConnection = null;
@@ -183,28 +204,12 @@
             return $returner;
         }
         
-        public function getAddress($params)
+        public function getAddresses($params)
         {
-            print_r($this->addressLengths);
-            print_r($params);
-            foreach($params as $key=>$val)
-            {
-                //echo $key;
-                //echo $val;
-                
-                if(is_string($val) && strlen($val) > $this->addressLengths[$key])
-                {
-                    echo strlen($val) . "\n";
-                    echo $this->addressLengths[$key];
-                    echo trimming;
-                    $params[$key] = substr($val, 0, $this->addressLengths[$key]-1 );
-                }
-            }
-            
+            $params = $this->trimParameters($params,"Addresses");
             print_r($params);
             $returner = $this->makeStatementSelect($this->findAddedAddressString, $params);
             $this->endStatement();
-            print_r($returner);
             return $returner;
         }
         
@@ -215,10 +220,9 @@
             $this->endStatement();
             if($returner == 0)
             {
-                return $this->getAddress($params);
+                $address = $this->getAddresses($params)[0];
+                return $address->aid;
             }
-            echo done;
-            print_r($returner);
             return $returner;
         }
     }
