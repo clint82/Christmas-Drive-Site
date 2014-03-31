@@ -7,6 +7,7 @@ $membership = new Membership();				//create new Membership object
 //Check if user has logged out
 if( isset($_GET['status']) && $_GET['status'] == 'loggedout') {
 	$membership->log_user_out();
+	header("location: login.php");
 }
 
 //Check that user has entered and submitted a correct username and password

@@ -10,11 +10,37 @@ Class Membership {
 		$ensure_credentials = $mysql->verify_username_and_pass( $username, md5($pwd) );		//validate users credentials against DB
 		
 		//if users credentials were successfully validated
-		if($ensure_credentials) {
+		if( !empty($ensure_credentials) ) {
 			$_SESSION['status'] = 'authorized';		//set session status to authorized
-			header("location: index.php");			//set this to location we want to take user
+			$_SESSION['type'] = $ensure_credentials;
+			
+			if( $_SESSION['type'] === 'ADMIN') {
+				header("location: admin.php");			//set this to location we want to take user
+			} else {
+				header("location: index.php");			//set this to location we want to take user
+			}
+			
 		} else {
 			return "Please enter a correct username and password.";		//if username and pwd were not found
+		}
+	}
+	
+	//attempts to add a new user to the DB. Returns true if successful and false if not successful.
+	function add_new_user($user_info) {
+		
+		//connect to the database
+		$mysql = new Mysql();
+		
+		//make sure username, email, and access code are correct
+		$response = $mysql->validate_new_user($user_info['username'], $user_info['email'], $user_info['access_code']);
+		
+		//if username, email and access code are correct insert user into DB and return true
+		if( $response === true ) {
+			$response = $mysql->insert_user($user_info);
+			return true;
+		} else {
+			//otherwise return an array of errors now held in $response
+			return $response;
 		}
 	}
 	
