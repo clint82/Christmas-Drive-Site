@@ -137,11 +137,11 @@ function addTextBoxIfUnselected(item)
 {
     if(item.value == "other")
     {
-        document.getElementById("otherLanguageDiv").style.visibility ="visible";
+        document.getElementById("otherLanguageDiv").style.display ="inline";
     }
     else 
     {
-        document.getElementById("otherLanguageDiv").style.visibility ="hidden";
+        document.getElementById("otherLanguageDiv").style.display ="none";
     }
 }
 
@@ -166,6 +166,29 @@ function chooseOption()
     {
         setAction(formElement, "editInfo.php");
     }
+}
+
+function disselectAddress()
+{
+    var elementOfAddressSelect = document.getElementById("addressSearchContainer");
+    var apartmentInfoDiv = document.getElementById("apartmentAndBuildingNumber");
+    
+    if(document.getElementById("addressType").value == "house")
+	{
+		elementOfAddressSelect.style.display = "inline";
+		apartmentInfoDiv.style.display = "none";
+	} 
+	else if(document.getElementById("addressType").value == "apartment")
+	{
+	    elementOfAddressSelect.style.display = "inline";
+	    apartmentInfoDiv.style.display = "inline";
+	}
+	else
+	{
+	    elementOfAddressSelect.style.display = "none";
+		apartmentInfoDiv.style.display = "none";
+	}
+	
 }
 
 
@@ -295,7 +318,7 @@ function chooseOption()
                <option value="other">Other</option>
             </select>
             <br>
-            <div id="otherLanguageDiv" name="otherLanguageDiv" style="height:100px;width:300px;border:1px;visibility:hidden;">
+            <div id="otherLanguageDiv" name="otherLanguageDiv" style="height:100px;width:300px;border:1px;display:none;">
                <input type='text' id='otherLanguage' name='otherLanguage'><br>
             </div>
          </div>
@@ -329,11 +352,26 @@ function chooseOption()
             Notes<br>
             <input type="text" id="notes" name="notes"><br>
          </div>
-         <div id="locationField">
-            <input id="autocomplete" placeholder="Enter your address"
-               onFocus="geoloscate()" type="text"></input>
+         <div id="addressChoiceDiv">
+            Type of Housing:<br>
+            <select id="addressType" name="addressType" onChange="disselectAddress()">
+               <option style="display: none;"></option>
+               <option value="house">House</option>
+               <option value="apartment">Apartment</option>
+            </select>
          </div>
-         <div id="addressSearchContainer">
+         
+         <div id="addressSearchContainer" style="display:none;">
+             <div id="apartmentAndBuildingNumber" style="display:none;">
+             Building:<br>
+                <input type="text" id="buildingNumber" name="buildingNumber"><br>
+             Apartment<br>
+                <input type="text" id="apartmentNumber" name="apartmentNumber"><br>
+             </div>
+             <div id="locationField">
+                <input id="autocomplete" placeholder="Enter your address"
+                   onFocus="geolocate()" type="text"></input>
+             </div>
              <table id="address">
                 <tr>
                    <td class="label" name="address">Street address</td>
@@ -361,7 +399,7 @@ function chooseOption()
                       id="country"  name="country" disabled="true"></input></td>
                 </tr>
              </table>
-             <input type="button" value="submit" onclick="this.parentNode.submit();">
+             <input type="button" value="submit" onclick="this.parentNode.parentNode.submit();">
          </div>
       </form>
    </body>

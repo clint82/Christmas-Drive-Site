@@ -39,7 +39,14 @@
             }
             
             $params = array();
-            $params[] = $_POST["street_number"];
+            if($_POST["addressType"] == 'apartment')
+            {
+                $params[] = "Bldg ".$_POST["buildingNumber"]." Apt ".$_POST["apartmentNumber"]." ".$_POST["street_number"]; 
+            }
+            else
+            {
+                $params[] = $_POST["street_number"];
+            }
             $params[] = $_POST["route"];
             $params[] = $_POST["locality"];
             $params[] = $_POST["postal_code"];

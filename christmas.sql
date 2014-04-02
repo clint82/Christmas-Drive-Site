@@ -38,7 +38,7 @@ CREATE TABLE PersonOrdering
     secondaryPhoneId INT NOT NULL DEFAULT 1,
     secondaryPhoneNum VARCHAR(20) NOT NULL DEFAULT "",
     
-    languageId INT NOT NULL DEFAULT 1,
+    languageId INT NOT NULL DEFAULT 1, 
     
     PRIMARY KEY(id),
     FOREIGN KEY(primaryPhoneId) REFERENCES PhoneType(id),
@@ -81,7 +81,7 @@ CREATE TABLE ClothingOrders
 CREATE TABLE Addresses
 (
     aid INT NOT NULL AUTO_INCREMENT,
-    houseNumber VARCHAR(10) NOT NULL,
+    houseNumber VARCHAR(30) NOT NULL,
     streetName  VARCHAR(30) NOT NULL,
     city        VARCHAR(20) NOT NULL,
     zipCode     VARCHAR(12) NOT NULL,
