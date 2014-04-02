@@ -13,6 +13,7 @@ CREATE TABLE PhoneType
 INSERT INTO PhoneType (description) VALUES("Home");
 INSERT INTO PhoneType (description) VALUES("Cell");
 INSERT INTO PhoneType (description) VALUES("Work");
+INSERT INTO PhoneType (description) VALUES("Other");
 
 CREATE TABLE Language
 (
