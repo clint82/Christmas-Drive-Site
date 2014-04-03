@@ -42,6 +42,8 @@ CREATE TABLE PersonOrdering
     
     notes VARCHAR(30) NOT NULL DEFAULT "",
     
+    #add if we want a food or clothing order
+    
     PRIMARY KEY(id),
     FOREIGN KEY(primaryPhoneId) REFERENCES PhoneType(id),
     FOREIGN KEY(secondaryPhoneId) REFERENCES PhoneType(id),

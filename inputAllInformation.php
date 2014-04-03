@@ -14,6 +14,10 @@
             $languageId = $_POST["languagesSpoken"];
             $notes = $_POST["notes"];
             
+            /*
+                add if we want a food or clothing order and do a check
+            */
+            
             //if inputting new language
             if($languageId == "other")
             {
@@ -65,7 +69,6 @@
                 echo "value is " . $something;
                 header("Location: christmasDriveForm.php");
             }
-            
         ?>
     <body>
 </html>
