@@ -15,6 +15,7 @@
         private $addPersonToHousehold = "INSERT INTO peopleInHouse (pid,aid) VALUES (?,?)";
         private $getAllTables = "SHOW TABLES FROM Christmas";
         private $addHeadOfHousehold = "INSERT IGNORE INTO HeadOfHousehold (hid, pid) VALUES (?,?)";
+        private $addPhoneType = "INSERT INTO PhoneType (description) VALUES (?)";
         private $hostname;
         private $mySqlConnection;
         private $preparedStatement;
@@ -236,6 +237,11 @@
         public function addHeadOfHouseHoldIfNotSet($houseId, $personId)
         {
             $this->makeStatementInsert($this->addHeadOfHousehold, array($houseId, $personId));
+        }
+        
+        public function addPhoneType($phoneType)
+        {
+            return $this->makeStatementInsert($this->addPhoneType, array($phoneType));
         }
     }
 ?>

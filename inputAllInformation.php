@@ -8,8 +8,19 @@
             $lastName = $_POST["lastName"];
             $email = $_POST["email"];
             $primaryPhoneId = $_POST["primaryPhone"];
+            if($primaryPhoneId == 4)
+            {
+                $primaryPhoneId = $dba->addPhoneType($_POST["primaryPhoneType"]);
+                echo $primaryPhoneId;
+            }
             $primaryPhoneNum = $_POST["primaryPhoneNum"];
             $secondaryPhoneId = $_POST["secondaryPhone"];
+            if($secondaryPhoneId == 4)
+            {
+                echo $_POST["secondaryPhoneType"];
+                $secondaryPhoneId = $dba->addPhoneType($_POST["secondaryPhoneType"]);
+                echo "<br>thing<br>" . $secondaryPhoneId . "<br";
+            }
             $secondaryPhoneNum = $_POST["secondaryPhoneNum"];
             $languageId = $_POST["languagesSpoken"];
             $notes = $_POST["notes"];

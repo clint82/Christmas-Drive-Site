@@ -277,6 +277,7 @@ function disselectAddress()
             <input type="radio" name="primaryPhone" value=2>Cell<br>
             <input type="radio" name="primaryPhone" value=3>Work<br>
             <input type="radio" name="primaryPhone" value=4>Other:<br>
+            <input type="text" id="primaryPhoneType" name="primaryPhoneType"><br>
          </div>
          <!--other description box stuff-->
          <div id="secondaryPhoneNumDiv" name="secondaryPhoneNumDiv">
@@ -290,6 +291,7 @@ function disselectAddress()
             <input type="radio" name="secondaryPhone" value=2>Cell<br>
             <input type="radio" name="secondaryPhone" value=3>Work<br>
             <input type="radio" name="secondaryPhone" value=4>Other:<br>
+            <input type="text" id="secondaryPhoneType" name="secondaryPhoneType"><br>
          </div>
          <!--other description box stuff-->
          <!--Number of family members-->
