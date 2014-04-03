@@ -8,6 +8,8 @@
             $lastName = $_POST["lastName"];
             $email = $_POST["email"];
             $primaryPhoneId = $_POST["primaryPhone"];
+            
+            //will add new id if there is a new phone type (not publically displayed for privacy reasone)
             if($primaryPhoneId == 4)
             {
                 $primaryPhoneId = $dba->addPhoneType($_POST["primaryPhoneType"]);
@@ -15,6 +17,8 @@
             }
             $primaryPhoneNum = $_POST["primaryPhoneNum"];
             $secondaryPhoneId = $_POST["secondaryPhone"];
+            
+            //will add new id if there is a new phone type (not publically displayed for privacy reasone)
             if($secondaryPhoneId == 4)
             {
                 echo $_POST["secondaryPhoneType"];

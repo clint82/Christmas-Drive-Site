@@ -181,7 +181,8 @@
         
         public function searchForName($nameToSearchFor)
         {
-            $returner = $this->makeStatementSelect($this->nameQueryString, array($nameToSearchFor));
+            $stringMatching = $nameToSearchFor . "%";
+            $returner = $this->makeStatementSelect($this->nameQueryString, array($stringMatching));
             $this->endStatement();
             return $returner;
         } 
