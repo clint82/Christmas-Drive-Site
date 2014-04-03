@@ -38,7 +38,9 @@ CREATE TABLE PersonOrdering
     secondaryPhoneId INT NOT NULL DEFAULT 1,
     secondaryPhoneNum VARCHAR(20) NOT NULL DEFAULT "",
     
-    languageId INT NOT NULL DEFAULT 1, 
+    languageId INT NOT NULL DEFAULT 1,
+    
+    notes VARCHAR(30) NOT NULL DEFAULT "",
     
     PRIMARY KEY(id),
     FOREIGN KEY(primaryPhoneId) REFERENCES PhoneType(id),
@@ -81,10 +83,10 @@ CREATE TABLE ClothingOrders
 CREATE TABLE Addresses
 (
     aid INT NOT NULL AUTO_INCREMENT,
-    houseNumber VARCHAR(30) NOT NULL,
-    streetName  VARCHAR(30) NOT NULL,
-    city        VARCHAR(20) NOT NULL,
-    zipCode     VARCHAR(12) NOT NULL,
+    houseNumber VARCHAR(30) NOT NULL DEFAULT "",
+    streetName  VARCHAR(30) NOT NULL DEFAULT "",
+    city        VARCHAR(20) NOT NULL DEFAULT "",
+    zipCode     VARCHAR(12) NOT NULL DEFAULT "",
     PRIMARY KEY (aid), 
     CONSTRAINT validAddress UNIQUE (houseNumber, streetName, city, zipCode)
 );
@@ -108,6 +110,8 @@ CREATE TABLE HeadOfHousehold
 (
     hid INT,
     pid INT,
+    #done to allow to keep multiple head of household
+    PRIMARY KEY (hid),
     FOREIGN KEY (hid) REFERENCES Addresses(aid),
     FOREIGN KEY (pid) REFERENCES PersonOrdering(id)
 );

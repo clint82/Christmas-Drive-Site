@@ -12,6 +12,7 @@
             $secondaryPhoneId = $_POST["secondaryPhone"];
             $secondaryPhoneNum = $_POST["secondaryPhoneNum"];
             $languageId = $_POST["languagesSpoken"];
+            $notes = $_POST["notes"];
             
             //if inputting new language
             if($languageId == "other")
@@ -23,7 +24,7 @@
             
             
             //add person
-            $arrayOfValues = array($firstName, $lastName, $email, $primaryPhoneId, $primaryPhoneNum, $secondaryPhoneId, $secondaryPhoneNum, $languageId);
+            $arrayOfValues = array($firstName, $lastName, $email, $primaryPhoneId, $primaryPhoneNum, $secondaryPhoneId, $secondaryPhoneNum, $languageId, $notes);
             if(!$languageId)
             {
                 echo "Failed to add language";
@@ -52,6 +53,8 @@
             $params[] = $_POST["postal_code"];
             $addressKey = $dba->addAddress($params);
             $something = $dba->addPersonToHouse($personId,$addressKey);
+            //insert ignore into head of household
+            $dba->addHeadOfHouseHoldIfNotSet($addressKey, $personId);
             echo $addressKey;
             
             

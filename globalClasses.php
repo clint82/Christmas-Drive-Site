@@ -6,7 +6,7 @@
         private $password = "password";
         private $dbName = "Christmas";
         private $nameQueryString = "SELECT * FROM PersonOrdering p WHERE p.lastName LIKE ?";
-        private $addFullPersonString = "INSERT INTO PersonOrdering (firstName, lastName, email, primaryPhoneId, primaryPhoneNum, secondaryPhoneId, secondaryPhoneNum, languageId) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
+        private $addFullPersonString = "INSERT INTO PersonOrdering (firstName, lastName, email, primaryPhoneId, primaryPhoneNum, secondaryPhoneId, secondaryPhoneNum, languageId, notes) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
         private $addLanguageString = "INSERT INTO Language (languageName) VALUES (?);";
         private $languageQueryString = "SELECT * FROM Language  ORDER BY languageName";
         private $addressAddingString = "INSERT IGNORE INTO Addresses (houseNumber, streetName, city, zipCode) VALUES (?, ?, ?, ?)";
@@ -14,6 +14,7 @@
         private $getColumnMaxStringLength = "SELECT CHARACTER_MAXIMUM_LENGTH FROM INFORMATION_SCHEMA.COLUMNS WHERE (table_name, COLUMN_NAME) = (?, ?)";
         private $addPersonToHousehold = "INSERT INTO peopleInHouse (pid,aid) VALUES (?,?)";
         private $getAllTables = "SHOW TABLES FROM Christmas";
+        private $addHeadOfHousehold = "INSERT IGNORE INTO HeadOfHousehold (hid, pid) VALUES (?,?)";
         private $hostname;
         private $mySqlConnection;
         private $preparedStatement;
@@ -230,6 +231,11 @@
         public function addPersonToHouse($person, $address)
         {
             $this->makeStatementInsert($this->addPersonToHousehold, array($person, $address));
+        }
+        
+        public function addHeadOfHouseHoldIfNotSet($houseId, $personId)
+        {
+            $this->makeStatementInsert($this->addHeadOfHousehold, array($houseId, $personId));
         }
     }
 ?>
