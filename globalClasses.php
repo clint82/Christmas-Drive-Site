@@ -18,7 +18,7 @@
         private $addPhoneType = "INSERT INTO PhoneType (description) VALUES (?)";
         private $addFoodOrder = "INSERT INTO FoodOrder (aid, numPeople, needDelievery) VALUES (?, ?, ?)";
         private $getAllClothingOrdersInAddress = "SELECT co.coid FROM ClothingOrders co, peopleInHouse pih WHERE co.orderedById = pih.pid AND pih.aid = (?)";
-        private $getNumberOfPeopleInFoodOrder = "SELECT fo.numPeople FROM FoodOrder fo WHERE fo.aid == (?)";
+        private $getNumberOfPeopleInFoodOrder = "SELECT fo.numPeople FROM FoodOrder fo WHERE fo.aid = (?)";
         private $hostname;
         private $mySqlConnection;
         private $preparedStatement;
@@ -226,6 +226,7 @@
             print_r($params);
             $returner = $this->makeStatementInsert($this->addressAddingString, $params);
             $this->endStatement();
+            echo "the returner is " . $returner;
             if($returner == 0)
             {
                 $address = $this->getAddresses($params)[0];

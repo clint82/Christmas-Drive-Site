@@ -49,13 +49,11 @@
                 echo "Failed to add language";
             }
             
-            print_r($arrayOfvalues);
-            
             $personId = $dba->addPerson($arrayOfValues);
             
             if(!$personId)
             {
-                echo "failed to add person";
+                echo "Failed to add person";
             }
             
             $params = array();
@@ -77,33 +75,33 @@
             $numPeople = $_POST["numberOfFamilyMembers"];
             $needDelivery = $_POST["deleivery"] == "Yes" ? true:false;
             $orderingFood = $_POST["foodOrClothing"] == "food" ? true:false;
-            echo $addressKey;
+            echo "Key for address is " . $addressKey . "<br>";
             
             //require that no food order has been placed for the house
             //if so, make sure that the number of people in the house is correct
             if($orderingFood)
             {
-                echo "ordering food";
-                print_r($dba->getClothingOrdersInHouse($addressKey));
-                echo "after";
-                echo count($dba->getClothingOrdersInHouse($addressKey));
+                echo "Food order was selected" . "<br>";
                 //if clothing order has not been placed for someone in the house
                 if(count($dba->getClothingOrdersInHouse($addressKey))==0)
                 {
-                    echo "number of clothing orders is 0";
+                    echo "No clothing orders Made for this address" . "<br>";
+                    echo "The number of people at this house is currently " . $dba->getNumPeopleInFoodOrder($addressKey) . "<br>";
                     //if no previous food order, insert ignore into food order
                     $numPeopleForFoodOrder = count($dba->getNumPeopleInFoodOrder($addressKey));
-                    print_r($numPeopleForFoodOrder);
                     if($numPeopleForFoodOrder==0)
                     {
-                        echo "adding food order";
+                        echo "No food order found for this address, adding food order" . "<br>";
                         $dba->addFoodOrder($addressKey, $numPeople, $needDelivery);
                     }
-                    print_r($numPeopleForFoodOrder);
+                    else
+                    {
+                        echo "Food order not added! food order has been made on the address " . $addressKey . "<br>";
+                    }
                 }
                 else
                 {
-                    echo "clothing order > 0";
+                    echo "Clothing order found for person " . $personId . "<br>";
                     //redirect to login to allow for food and clothing
                 }
             }
