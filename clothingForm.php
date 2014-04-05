@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html>
-    <?php
+	<?php
         session_start();
         echo $_SESSION["personOrderingClothesId"];
     ?>
+    
     <head>
         <script src="myscript.js"></script>
         
@@ -212,13 +213,13 @@
 			{
 				document.getElementById("boysUnderwearSizeDiv").style.display ="inline";
 				document.getElementById("boysDiaperSizeDiv").style.display ="none";
-				document.getElementById("boysUODSpeiclaDiv").style.display ="none";
+				document.getElementById("boysUODSpecialDiv").style.display ="none";
 			} 
 			else if (document.getElementById("boysDiapers").checked)
 			{
 				document.getElementById("boysUnderwearSizeDiv").style.display ="none";
 				document.getElementById("boysDiaperSizeDiv").style.display ="inline";
-				document.getElementById("boysUODSpeiclaDiv").style.display ="none";
+				document.getElementById("boysUODSpecialDiv").style.display ="none";
 			}
 			else
 			{

@@ -6,8 +6,8 @@
             
             $attemptedOrderType = $_SESSION["attemptedOrderType"];
             $errorType = $_SESSION["errorType"];
-            echo $attemptedOrderType . "<br>";
-            echo $errorType . "<br>";
+            //echo $attemptedOrderType . "<br>";
+            //echo $errorType . "<br>";
             
             if($attemptedOrderType == "food")
             {

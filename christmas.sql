@@ -60,9 +60,11 @@ INSERT INTO PersonOrdering (firstName, lastName, email) VALUES ("Other", "Name",
 CREATE TABLE Children
 (
     cid INT NOT NULL AUTO_INCREMENT,
-    firstName VARCHAR(20),
+    firstName VARCHAR(20), 
     lastName VARCHAR(20),
     age INT NOT NULL,
+    childID VARCHAR(3),
+    childIDNo VARCHAR(30),
     primaryGaurdianId INT NOT NULL DEFAULT 1,
     PRIMARY KEY(cid),
     FOREIGN KEY(primaryGaurdianId) REFERENCES PersonOrdering(id) 
@@ -108,6 +110,9 @@ CREATE TABLE ClothingOrders
     uniIO VARCHAR(35),
     uniSocks VARCHAR(35),
     uniDiapers VARCHAR(35),
+    notes VARCHAR(50),
+    checklist VARCHAR(50),
+    completedBy VARCHAR(3),
     PRIMARY KEY(coid),
     FOREIGN KEY(orderedById) REFERENCES PersonOrdering(id),
     FOREIGN KEY(orderedForId) REFERENCES Children(cid)
