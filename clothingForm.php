@@ -1,10 +1,25 @@
-
 <!DOCTYPE html>
 <html>
+    <?php
+        session_start();
+        echo $_SESSION["personOrderingClothesId"];
+    ?>
     <head>
         <script src="myscript.js"></script>
         
         <script type ="text/javascript">
+        
+        function childIDSelect()
+        {
+            if(document.getElementById("childIDNo").checked)
+            {
+                document.getElementById("childIDNoSDiv").style.display ="inline";
+            }
+            else
+            {
+				document.getElementById("childIDNoSDiv").style.display ="none";
+            }
+        }
         
         function genderSelect()
 		{
@@ -219,7 +234,7 @@
     </head>
     
     <body>
-        <form name="christmas" action="signup.php" method="POST">
+        <form name="clothingForm" action="clothingFormBE.php" method="POST">
             <div id="firstNameDiv" name="firstNameDiv">
             	Head of Household Name*<br>
                 First Name <input type="text" id="firstName" name="firstName" onkeyup="highlightNameBoxIfNotValidated('firstName')"><br>
@@ -249,21 +264,25 @@
             
             <div id="childIDDiv" name="childIDDiv">
             	Child's ID*<br>
-            	<input type="radio" name="childID" value=1>Yes<br>
-                <input type="radio" name="childID" value=2>No<br><br>
+            	<input id = "childIDYes" onclick = "javascript:childIDSelect();" type="radio" name="childID" value="Yes">Yes<br>
+                <input id = "childIDNo"  onclick = "javascript:childIDSelect();" type="radio" name="childID" value="No">No<br><br>
+            </div>
+            
+            <div id="childIDNoSDiv" name="childIDNoSDiv" style="display:none;">
+                If "No" make notation <input type="text" id="childIDNoS" name="childIDNoS" onkeyup="highlightNameBoxIfNotValidated('childIDNoS')"><br><br>
             </div>
             
             <div id="sexOfChildDiv" name="sexOfChildDiv">
             	Sex of Child*<br>
-            	<input id = "boy" type="radio" name="sexOfChild" value="boy" onclick = "javascript:genderSelect();">Boy<br>
-                <input id = "girl" type="radio" name="sexOfChild" value="girl" onclick = "javascript:genderSelect();">Girl<br>
-                <input id = "unknown" type="radio" name="sexOfChild" value="unknown" onclick = "javascript:genderSelect();">Unknown<br><br>
+            	<input id = "boy" type="radio" name="sexOfChild" value="Boy" onclick = "javascript:genderSelect();">Boy<br>
+                <input id = "girl" type="radio" name="sexOfChild" value="Girl" onclick = "javascript:genderSelect();">Girl<br>
+                <input id = "unknown" type="radio" name="sexOfChild" value="Unknown" onclick = "javascript:genderSelect();">Unknown<br><br>
             </div>
             
             <div id="ageDiv">
                 Age*<br>
                 <select id="age" name="age">
-                  <option value=""></option>
+                  <option value=0></option>
                   <option value=1>1</option>
                   <option value=2>2</option>
                   <option value=3>3</option>
@@ -490,7 +509,7 @@
             
             <div id="boysOption" name="boysOption" style="display:none">
 				<div id="boysIOJDiv" name="boysIOJDiv" style="display:inline;">
-					Select Infant Outfit, or Jeans & Shirt - Girl*<br>
+					Select Infant Outfit, or Jeans & Shirt - Boy*<br>
 					<input id = "boysIO" onclick = "boysIOJSelect()" type="radio" name="boysIOJ" value=1>Boy's Infant Outfit<br>
 					<input id = "boysJAS" onclick = "boysIOJSelect()" type="radio" name="boysIOJ" value=2>Boy's Jeans & Shirt<br><br>
 				</div>
@@ -524,7 +543,7 @@
 				
 				<div id="boysJASDiv" style="display:none;">
 					<div id="boysJeansDiv" name="boysJeansDiv" style="display:inline;">
-						Select Jeans or Special Request Item - Girl*<br>
+						Select Jeans or Special Request Item - Boy*<br>
 						<input id = "boysJeans" onclick = "javascript:boysJeansSelect();" type="radio" name="boysJeans" value=1>Boy's Jeans<br>
 						<input id = "boysJeansS" onclick = "javascript:boysJeansSelect();" type="radio" name="boysJeans" value=2>Boy's Special Request Item (Jeans)<br><br>
 					</div>
@@ -569,7 +588,7 @@
 					</div>
 					
 					<div id="boysShirtDiv" name="boysShirtDiv" style="display:inline;">
-						Select Shirt or Special Request Items - Girl*<br>
+						Select Shirt or Special Request Items - Boy*<br>
 						<input id = "boysShirt" onclick = "javascript:boysShirtSelect();" type="radio" name="boysShirt" value=1>Boy's Shirt<br>
 						<input id = "boysShirtS" onclick = "javascript:boysShirtSelect();" type="radio" name="boysShirt" value=2>Boy's Special Request Item (shirt)<br><br>
 					</div>
@@ -603,7 +622,7 @@
 				</div>
 				
 				<div id="boysSocksDiv" name="boysSocksDiv" style = "display:inline;">
-					Select Socks or Special Request Items - Girl*<br>
+					Select Socks or Special Request Items - Boy*<br>
 					<input id = "boysSocks" onclick = "javascript:boysSocksSelect();" type="radio" name="boysSocks" value=1>Boy's Socks<br>
 					<input id = "boysSocksS" onclick = "javascript:boysSocksSelect();" type="radio" name="boysSocks" value=2>Boy's Special Request Item (socks)<br><br>
 				</div>
@@ -630,7 +649,7 @@
 				</div>
 				
 				<div id="boysUODDiv" name="boysUODDiv" style="display:inline;">
-					Select Underwear/Pull-up or Special Request Items - Girl*<br>
+					Select Underwear/Pull-up or Special Request Items - Boy*<br>
 					<input id = "boysUnderwear" onclick = "javascript:boysUODSelect();" type="radio" name="boysUOD" value=1>Boy's Underwear<br>
 					<input id = "boysDiapers" onclick = "javascript:boysUODSelect();" type="radio" name="boysUOD" value=2>Boy's Diapers and Pullups<br>
 					<input id = "boysUODS" onclick = "javascript:boysUODSelect();" type="radio" name="boysUOD" value=3>Boy's Special Request Item (underwear/diapers)<br><br>
@@ -724,13 +743,13 @@
             </div>
             
             <div id="checklistDiv" name="checklistDiv">
-            	<input type="checkbox" name="checklist" value="age">Age of Child<br>
-            	<input type="checkbox" name="checklist" value="io">Infant Outfit OR<br>
-            	<input type="checkbox" name="checklist" value="jeans">Jeans AND<br>
-            	<input type="checkbox" name="checklist" value="shirt">Shirt<br>
-            	<input type="checkbox" name="checklist" value="socks">Socks<br>
-            	<input type="checkbox" name="checklist" value="underwear">Underwear OR<br>
-            	<input type="checkbox" name="checklist" value="diapers">Diapers<br><br>
+            	<input id = "checklist[]" type="checkbox" name="checklist[]" value="age of child">Age of Child<br>
+            	<input id = "checklist[]" type="checkbox" name="checklist[]" value="infant outfit">Infant Outfit OR<br>
+            	<input id = "checklist[]" type="checkbox" name="checklist[]" value="jeans">Jeans AND<br>
+            	<input id = "checklist[]" type="checkbox" name="checklist[]" value="shirt">Shirt<br>
+            	<input id = "checklist[]" type="checkbox" name="checklist[]" value="socks">Socks<br>
+            	<input id = "checklist[]" type="checkbox" name="checklist[]" value="underwear">Underwear OR<br>
+            	<input id = "checklist[]" type="checkbox" name="checklist[]" value="diapers">Diapers<br><br>
             </div>
             
             <div id="initialsDiv" name="initialsDiv">

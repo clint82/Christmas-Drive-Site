@@ -2,6 +2,8 @@
     <body>
         <?php
             require 'globalClasses.php';
+            session_start();
+            echo "Id of ordering person is " . $_SESSION["personOrderingClothesId"] . "<br>";
             $dba = new databaseAcessor();
             
             $firstName = $_POST["childFirstName"];

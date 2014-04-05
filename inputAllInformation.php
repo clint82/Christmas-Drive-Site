@@ -74,6 +74,7 @@
             $dba->addHeadOfHouseHoldIfNotSet($addressKey, $personId);
             $numPeople = $_POST["numberOfFamilyMembers"];
             $needDelivery = $_POST["deleivery"] == "Yes" ? true:false;
+            echo $_POST["foodOrClothing"] . "<br>";
             $orderingFood = $_POST["foodOrClothing"] == "food" ? true:false;
             echo "Key for address is " . $addressKey . "<br>";
             
@@ -88,8 +89,8 @@
                     echo "No clothing orders Made for this address" . "<br>";
                     echo "The number of people at this house is currently " . $dba->getNumPeopleInFoodOrder($addressKey) . "<br>";
                     //if no previous food order, insert ignore into food order
-                    $numPeopleForFoodOrder = count($dba->getNumPeopleInFoodOrder($addressKey));
-                    if($numPeopleForFoodOrder==0)
+                    $numFoodOrdersForAddress = count($dba->getNumPeopleInFoodOrder($addressKey));
+                    if($numFoodOrdersForAddress==0)
                     {
                         echo "No food order found for this address, adding food order" . "<br>";
                         $dba->addFoodOrder($addressKey, $numPeople, $needDelivery);
@@ -103,6 +104,33 @@
                 {
                     echo "Clothing order found for person " . $personId . "<br>";
                     //redirect to login to allow for food and clothing
+                }
+            }
+            else
+            //is a clothing order
+            {
+                echo "Ordering clothing<br>";
+                $foodOrdersForAddress = $dba->getNumPeopleInFoodOrder($addressKey);
+                echo "here";
+                $clothingOrderForPerson = $dba->getClothingOrderForPerson($personId);
+                echo "here";
+                $isFoodOrderForHouse = count($foodOrdersForAddress) > 0 ? true:false;
+                $isClothingOrderForPerson = count($clothingOrderForPerson) > 0 ? true:false;
+                if($isFoodOrderForHouse)
+                {
+                    echo "There is already someone who made a food order for this house<br>";
+                }
+                else if($isClothingOrderForPerson)
+                {
+                    echo "This person already made a clothing order<br>";
+                }
+                else
+                {
+                    echo "Adding clothing order<br>";
+                    session_start();
+                    $_SESSION["personOrderingClothesId"] = $personId;
+                    echo "about to send<br>";
+                    header("Location: clothingForm.php");
                 }
             }
             
