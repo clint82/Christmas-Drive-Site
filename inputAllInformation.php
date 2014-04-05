@@ -80,6 +80,10 @@
             
             //require that no food order has been placed for the house
             //if so, make sure that the number of people in the house is correct
+
+            session_start();
+            $_SESSION["attemptedOrderType"] = $orderingFood ? "food" : "clothes";
+                    
             if($orderingFood)
             {
                 echo "Food order was selected" . "<br>";
@@ -127,7 +131,6 @@
                 else
                 {
                     echo "Adding clothing order<br>";
-                    session_start();
                     $_SESSION["personOrderingClothesId"] = $personId;
                     echo "about to send<br>";
                     header("Location: clothingForm.php");

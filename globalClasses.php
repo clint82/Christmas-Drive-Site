@@ -22,6 +22,7 @@
         private $getAllClothingOrdersInAddress = "SELECT co.coid FROM ClothingOrders co, peopleInHouse pih WHERE co.orderedById = pih.pid AND pih.aid = (?)";
         private $getNumberOfPeopleInFoodOrder = "SELECT fo.numPeople FROM FoodOrder fo WHERE fo.aid = (?)";
         private $getClothingOrderForPerson = "SELECT co.coid FROM ClothingOrders co WHERE co.orderedById = (?)";
+        private $getMemberRoleWithUsernameAndPassword = "SELECT role FROM Members WHERE (username, password) = (?, ?)";
         private $hostname;
         private $mySqlConnection;
         private $preparedStatement;
@@ -284,6 +285,11 @@
         public function getClothingOrderForPerson($personId)
         {
             return $this->makeStatementSelect($this->getClothingOrderForPerson , array($personId));
+        }
+        
+        public function getUserRole($username, $passwordHash)
+        {
+            return $this->makeStatementSelect($this->getMemberRoleWithUsernameAndPassword, array($username, $passwordHash));
         }
     }
 ?>
