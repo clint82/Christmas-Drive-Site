@@ -14,9 +14,14 @@
         private $getColumnMaxStringLength = "SELECT CHARACTER_MAXIMUM_LENGTH FROM INFORMATION_SCHEMA.COLUMNS WHERE (table_name, COLUMN_NAME) = (?, ?)";
         private $addPersonToHousehold = "INSERT INTO peopleInHouse (pid,aid) VALUES (?,?)";
         private $getAllTables = "SHOW TABLES FROM Christmas";
-        private $addHeadOfHousehold = "INSERT IGNORE INTO HeadOfHousehold (hid, pid) VALUES (?,?)";
+        
+        // Added clothing order string here
         private $addChildString = "INSERT INTO Children (firstName, lastName, age) VALUES (?,?,?)";
         private $addClothingOrderString = "INSERT INTO ClothingOrders (gender, infantOutfitSize, infantOutfitSpecial, jeansSize, jeansSpecial, shirtSize, shirtSpecial, socksSize, socksSpecial, underwearSize, diaperSize, uodSpecial, uniIO, uniSocks, uniDiapers) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+        private $addHeadOfHousehold = "INSERT IGNORE INTO HeadOfHousehold (hid, pid) VALUES (?,?)";
+        private $addChildString = "INSERT INTO Children (firstName, lastName, age) VALUES (?,?,?)";
+        private $addClothingOrderString = "INSERT INTO ClothingOrders (gender, infantOutfitSize, infantOutfitSpecial, jeansSize, jeansSpecial, shirtSize, shirtSpecial, socksSize, socksSpecial, underwearSize, diaperSize, uodSpecial, uniIO, uniSocks, uniDiapers, notes, checklist, completedBy) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+
         private $addPhoneType = "INSERT INTO PhoneType (description) VALUES (?)";
         private $addFoodOrder = "INSERT INTO FoodOrder (aid, numPeople, needDelievery) VALUES (?, ?, ?)";
         private $getAllClothingOrdersInAddress = "SELECT co.coid FROM ClothingOrders co, peopleInHouse pih WHERE co.orderedById = pih.pid AND pih.aid = (?)";
@@ -116,7 +121,6 @@
         private function makeStatementInsert($statementString, $params)
         {
             $connectingName = 'mysql:host='. $this->hostname . ';dbname=' . $this->dbName;
-            
             try
             {
                 $mySqlConnection = new PDO($connectingName,$this->username,$this->password); 
@@ -256,6 +260,22 @@
         public function addPersonToHouse($person, $address)
         {
             $this->makeStatementInsert($this->addPersonToHousehold, array($person, $address));
+        }
+  
+        // Added function here to deal with clothing orders
+        
+        public function addClothingOrder($params)
+        {
+            $returner = $this->makeStatementInsert($this->addClothingOrderString, $params);
+            $this->endStatement();
+            return $returner;
+        }
+        
+        public function addChild($params)
+        {
+            $returner = $this->makeStatementInsert($this->addChildString, $params);
+            $this->endStatement();
+            return $returner;
         }
         
         public function addHeadOfHouseHoldIfNotSet($houseId, $personId)
