@@ -14,14 +14,9 @@
         private $getColumnMaxStringLength = "SELECT CHARACTER_MAXIMUM_LENGTH FROM INFORMATION_SCHEMA.COLUMNS WHERE (table_name, COLUMN_NAME) = (?, ?)";
         private $addPersonToHousehold = "INSERT INTO peopleInHouse (pid,aid) VALUES (?,?)";
         private $getAllTables = "SHOW TABLES FROM Christmas";
-        
-        // Added clothing order string here
-        private $addChildString = "INSERT INTO Children (firstName, lastName, age) VALUES (?,?,?)";
-        private $addClothingOrderString = "INSERT INTO ClothingOrders (gender, infantOutfitSize, infantOutfitSpecial, jeansSize, jeansSpecial, shirtSize, shirtSpecial, socksSize, socksSpecial, underwearSize, diaperSize, uodSpecial, uniIO, uniSocks, uniDiapers) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
         private $addHeadOfHousehold = "INSERT IGNORE INTO HeadOfHousehold (hid, pid) VALUES (?,?)";
         private $addChildString = "INSERT INTO Children (firstName, lastName, age) VALUES (?,?,?)";
-        private $addClothingOrderString = "INSERT INTO ClothingOrders (gender, infantOutfitSize, infantOutfitSpecial, jeansSize, jeansSpecial, shirtSize, shirtSpecial, socksSize, socksSpecial, underwearSize, diaperSize, uodSpecial, uniIO, uniSocks, uniDiapers, notes, checklist, completedBy) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
-
+        private $addClothingOrderString = "INSERT INTO ClothingOrders (gender, infantOutfitSize, infantOutfitSpecial, jeansSize, jeansSpecial, shirtSize, shirtSpecial, socksSize, socksSpecial, underwearSize, diaperSize, uodSpecial, uniIO, uniSocks, uniDiapers) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
         private $addPhoneType = "INSERT INTO PhoneType (description) VALUES (?)";
         private $addFoodOrder = "INSERT INTO FoodOrder (aid, numPeople, needDelievery) VALUES (?, ?, ?)";
         private $getAllClothingOrdersInAddress = "SELECT co.coid FROM ClothingOrders co, peopleInHouse pih WHERE co.orderedById = pih.pid AND pih.aid = (?)";
@@ -121,6 +116,7 @@
         private function makeStatementInsert($statementString, $params)
         {
             $connectingName = 'mysql:host='. $this->hostname . ';dbname=' . $this->dbName;
+            
             try
             {
                 $mySqlConnection = new PDO($connectingName,$this->username,$this->password); 
@@ -261,22 +257,6 @@
         {
             $this->makeStatementInsert($this->addPersonToHousehold, array($person, $address));
         }
-  
-        // Added function here to deal with clothing orders
-        
-        public function addClothingOrder($params)
-        {
-            $returner = $this->makeStatementInsert($this->addClothingOrderString, $params);
-            $this->endStatement();
-            return $returner;
-        }
-        
-        public function addChild($params)
-        {
-            $returner = $this->makeStatementInsert($this->addChildString, $params);
-            $this->endStatement();
-            return $returner;
-        }
         
         public function addHeadOfHouseHoldIfNotSet($houseId, $personId)
         {
@@ -311,5 +291,60 @@
         {
             return $this->makeStatementSelect($this->getMemberRoleWithUsernameAndPassword, array($username, $passwordHash));
         }
+        
+        public function verify_username_and_pass($params) 
+        {
+				
+			$stmt = "SELECT * FROM members WHERE username = ? AND password = ? LIMIT 1;";
+			$result = $this->makeStatementSelect($stmt, $params);
+			print_r($result);
+			return $result; 
+		}		
+
+		public function validate_new_user($username, $email, $access_code) 
+		{
+		
+			$query_1 = 'SELECT username FROM members WHERE username = ?';
+			$query_2 = 'SELECT username FROM members WHERE email = ?';
+			
+			$errors = array( 'username' => null, 'email' => null, 'access_code' => null);	//associative array containing all possible errors we could find with initial values set to null.
+			$found_error = false;															// a boolean variable that tells us if we found an error
+			
+			//check username is unique
+			$result = $this->makeStatementInsert( $query_1, array($username) );
+			if( !empty($result) ) {
+				$errors['username'] = 'That user name already exists.';
+				$found_error = true;
+			}
+			
+			//check email is unique
+			$result = $this->makeStatementInsert( $query_2, array($email) );
+			if( !empty($result) ) {
+				$errors['email'] =  'This email already has an account.';
+				$found_error = true;
+			}
+			
+			//check access_code is valid
+			if( $access_code != ADMIN_KEY && $access_code != VOL_KEY) {
+				$errors['access_code'] =  'Invalid access code.';
+				$found_error = true;
+			}
+			
+			//if an error was found return the array of errors
+			if($found_error) {
+				return $errors;
+			}
+			
+			//otherwise just return true
+			return true;
+		}
+		
+		public function insert_user($params) 
+		{
+			$stmt = "INSERT INTO members (fname, lname, initials, email, username, password, role) VALUES( ?, ?, ?, ?, ?, ?, ?);";
+			$result = $this->makeStatementInsert($stmt, $params);
+
+			return $result;
+		}
     }
 ?>
