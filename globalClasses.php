@@ -16,6 +16,9 @@
         private $getAllTables = "SHOW TABLES FROM Christmas";
         private $addHeadOfHousehold = "INSERT IGNORE INTO HeadOfHousehold (hid, pid) VALUES (?,?)";
         private $addPhoneType = "INSERT INTO PhoneType (description) VALUES (?)";
+        private $addFoodOrder = "INSERT INTO FoodOrder (aid, numPeople, needDelievery) VALUES (?, ?, ?)";
+        private $getAllClothingOrdersInAddress = "SELECT co.coid FROM ClothingOrders co, peopleInHouse pih WHERE co.orderedById = pih.pid AND pih.aid = (?)";
+        private $getNumberOfPeopleInFoodOrder = "SELECT fo.numPeople FROM FoodOrder fo WHERE fo.aid == (?)";
         private $hostname;
         private $mySqlConnection;
         private $preparedStatement;
@@ -217,6 +220,7 @@
             return $returner;
         }
         
+        //does not work when addresses duplicates
         public function addAddress($params)
         {
             print_r($params);
@@ -243,6 +247,21 @@
         public function addPhoneType($phoneType)
         {
             return $this->makeStatementInsert($this->addPhoneType, array($phoneType));
+        }
+        
+        public function getClothingOrdersInHouse($addressKey)
+        {
+            return $this->makeStatementSelect($this->getAllClothingOrdersInAddress, array($addressKey));
+        }
+        
+        public function getNumPeopleInFoodOrder($addressKey)
+        {
+            return $this->makeStatementSelect($this->getNumberOfPeopleInFoodOrder, array($addressKey));
+        }
+        
+        public function addFoodOrder($addressKey, $numPeople, $needDelivery)
+        {
+            $this->makeStatementInsert($this->addFoodOrder, array($addressKey, $numPeople, $needDelivery));
         }
     }
 ?>

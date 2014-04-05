@@ -354,6 +354,15 @@ function disselectAddress()
             Notes<br>
             <input type="text" id="notes" name="notes"><br>
          </div>
+         
+         <div id="typeOfOrderDiv" name="typeOfOrderDiv">
+            Christmas Store Selection<br>
+            <input type="radio" name="typeOfOrder" value="food">Food<br>
+            <input type="radio" name="typeOfOrder" value="clothing">Clothing & Toys<br>
+         </div>
+         Number of Family Members<br>
+         <input type="text" id="numberOfFamilyMembers" name="numberOfFamilyMembers"><br>
+         
          <div id="addressChoiceDiv">
             Type of Housing:<br>
             <select id="addressType" name="addressType" onChange="disselectAddress()">

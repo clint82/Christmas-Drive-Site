@@ -74,16 +74,46 @@
             $something = $dba->addPersonToHouse($personId,$addressKey);
             //insert ignore into head of household
             $dba->addHeadOfHouseHoldIfNotSet($addressKey, $personId);
+            $numPeople = $_POST["numberOfFamilyMembers"];
+            $needDelivery = $_POST["deleivery"] == "Yes" ? true:false;
+            $orderingFood = $_POST["foodOrClothing"] == "food" ? true:false;
             echo $addressKey;
             
+            //require that no food order has been placed for the house
+            //if so, make sure that the number of people in the house is correct
+            if($orderingFood)
+            {
+                echo "ordering food";
+                print_r($dba->getClothingOrdersInHouse($addressKey));
+                echo "after";
+                echo count($dba->getClothingOrdersInHouse($addressKey));
+                //if clothing order has not been placed for someone in the house
+                if(count($dba->getClothingOrdersInHouse($addressKey))==0)
+                {
+                    echo "number of clothing orders is 0";
+                    //if no previous food order, insert ignore into food order
+                    $numPeopleForFoodOrder = count($dba->getNumPeopleInFoodOrder($addressKey));
+                    print_r($numPeopleForFoodOrder);
+                    if($numPeopleForFoodOrder==0)
+                    {
+                        echo "adding food order";
+                        $dba->addFoodOrder($addressKey, $numPeople, $needDelivery);
+                    }
+                    print_r($numPeopleForFoodOrder);
+                }
+                else
+                {
+                    echo "clothing order > 0";
+                    //redirect to login to allow for food and clothing
+                }
+            }
             
-            
-            if($personId && $languageId && $addressKey)
+           /* if($personId && $languageId && $addressKey)
             {
                 echo "success";
                 echo "value is " . $something;
                 header("Location: christmasDriveForm.php");
-            }
+            }*/
         ?>
     <body>
 </html>

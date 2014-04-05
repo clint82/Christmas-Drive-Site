@@ -50,6 +50,8 @@ CREATE TABLE PersonOrdering
     FOREIGN KEY(languageId) REFERENCES Language(id)
 );
 
+CREATE INDEX part_of_name ON PersonOrdering (lastName(20));
+
 #Will insert a default person to just add addresses without having a  head of household
 INSERT INTO PersonOrdering (firstName, lastName, email) VALUES ("No", "Name", "ddd");
 INSERT INTO PersonOrdering (firstName, lastName, email) VALUES ("Other", "Name", "ff");
@@ -71,6 +73,7 @@ INSERT INTO Childeren (firstName, lastName, dateOfBirth) VALUES ("No", "Name", C
 
 #Need to see if can combine ordered by and ordered for ino primary key
 #Need to add structure to add info
+#may be better if put ordered by id in seperate table
 CREATE TABLE ClothingOrders
 (
     coid INT NOT NULL AUTO_INCREMENT,
@@ -80,6 +83,9 @@ CREATE TABLE ClothingOrders
     FOREIGN KEY(orderedById) REFERENCES PersonOrdering(id),
     FOREIGN KEY(orderedForId) REFERENCES Childeren(cid)
 );
+
+#for quick lookup when querying if there are any people in a house ordering clothes
+CREATE INDEX peopleOrderingClothes ON ClothingOrders (orderedById, coid);
 
 #this stores unique addresses with int primary keys for quick linking
 CREATE TABLE Addresses
@@ -102,7 +108,7 @@ CREATE TABLE peopleInHouse
 (
     pid INT,
     aid INT,
-    #PRIMARY KEY(pid)
+    PRIMARY KEY(aid,pid),
     FOREIGN KEY (pid) REFERENCES PersonOrdering(id),
     FOREIGN KEY (aid) REFERENCES Addresses(aid)
 );
@@ -116,4 +122,14 @@ CREATE TABLE HeadOfHousehold
     PRIMARY KEY (hid),
     FOREIGN KEY (hid) REFERENCES Addresses(aid),
     FOREIGN KEY (pid) REFERENCES PersonOrdering(id)
+);
+
+#Represents a simple food order
+CREATE TABLE FoodOrder
+(
+    aid INT,
+    numPeople INT,
+    needDelievery BOOL NOT NULL DEFAULT 0,
+    PRIMARY KEY (aid),
+    FOREIGN KEY (aid) REFERENCES Addresses(aid)
 );
