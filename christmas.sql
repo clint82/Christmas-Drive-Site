@@ -69,7 +69,21 @@ CREATE TABLE Children
 );
 
 #Default child name
-INSERT INTO Children (firstName, lastName, dateOfBirth) VALUES ("No", "Name", 0);
+INSERT INTO Children (firstName, lastName, age) VALUES ("No", "Name", 0);
+
+#Table to hold users (volunteers and admins) of the application
+CREATE TABLE Members
+(
+	id INT NOT NULL AUTO_INCREMENT,
+	fname VARCHAR(30) NOT NULL,
+	lname VARCHAR(30) NOT NULL,
+	initials VARCHAR(5),
+	email VARCHAR(40) NOT NULL,
+	username VARCHAR(40) NOT NULL,
+	password VARCHAR(60) NOT NULL,
+	role VARCHAR(10) NOT NULL,
+	PRIMARY KEY(id)
+);
 
 #Need to see if can combine ordered by and ordered for ino primary key
 #Need to add structure to add info
