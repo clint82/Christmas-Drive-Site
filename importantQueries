@@ -1,0 +1,11 @@
+SELECT p.firstName, p.lastName, p.email, ptone.description, p.primaryPhoneNum, pttwo.description, p.secondaryPhoneNum, l.languageName, p.notes
+FROM PersonOrdering p, PhoneType ptone, PhoneType pttwo, Language l
+WHERE ptone.id = p.primaryPhoneId AND pttwo.id = p.secondaryPhoneId AND l.id = p.languageId;
+
+SELECT p.firstName, p.lastName, a.houseNumber, a.streetName, a.city, a.zipCode
+FROM PersonOrdering p, Addresses a, peopleInHouse ph
+WHERE ph.aid=a.aid AND p.id = ph.pid;
+
+SELECT p.firstName, p.lastName, a.houseNumber, a.streetName, a.city, a.zipCode
+FROM PersonOrdering p, Addresses a, HeadOfHousehold ph
+WHERE ph.hid=a.aid AND p.id = ph.pid;
