@@ -100,6 +100,7 @@
                     {
                         echo "No food order found for this address, adding food order" . "<br>";
                         $dba->addFoodOrder($addressKey, $numPeople, $needDelivery);
+                        header("Location: christmasDriveForm.php");
                     }
                     else
                     {
@@ -127,7 +128,7 @@
                 if($isFoodOrderForHouse)
                 {
                     $_SESSION["errorType"] = "previouslyMadeFoodOrder";
-                    echo "There is already someone who made a food order for this house<br>";
+                    echo "There is already someone who made a food order for this house, cannot add a clothing order<br>";
                 }
                 else if($isClothingOrderForPerson)
                 {
@@ -143,12 +144,12 @@
                 }
             }
             
-           /* if($personId && $languageId && $addressKey)
+            if($personId && $languageId && $addressKey)
             {
                 echo "success";
                 echo "value is " . $something;
-                header("Location: christmasDriveForm.php");
-            }*/
+                header("Location: orderVerification.php");
+            }
         ?>
     <body>
 </html>
