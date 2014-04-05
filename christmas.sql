@@ -57,19 +57,19 @@ INSERT INTO PersonOrdering (firstName, lastName, email) VALUES ("No", "Name", "d
 INSERT INTO PersonOrdering (firstName, lastName, email) VALUES ("Other", "Name", "ff");
 
 #Not sure if primaryGaurdianId should not be added for flexibility by admins, will have today as birthday by default
-CREATE TABLE Childeren
+CREATE TABLE Children
 (
     cid INT NOT NULL AUTO_INCREMENT,
     firstName VARCHAR(20),
     lastName VARCHAR(20),
-    dateOfBirth DATE NOT NULL,
+    age INT NOT NULL,
     primaryGaurdianId INT NOT NULL DEFAULT 1,
     PRIMARY KEY(cid),
     FOREIGN KEY(primaryGaurdianId) REFERENCES PersonOrdering(id) 
 );
 
 #Default child name
-INSERT INTO Childeren (firstName, lastName, dateOfBirth) VALUES ("No", "Name", CURDATE());
+INSERT INTO Children (firstName, lastName, dateOfBirth) VALUES ("No", "Name", 0);
 
 #Need to see if can combine ordered by and ordered for ino primary key
 #Need to add structure to add info
@@ -79,9 +79,24 @@ CREATE TABLE ClothingOrders
     coid INT NOT NULL AUTO_INCREMENT,
     orderedById INT,
     orderedForId INT,
+    gender VARCHAR(10),
+    infantOutfitSize VARCHAR(35),
+    infantOutfitSpecial VARCHAR(35),
+    jeansSize VARCHAR(35),
+    jeansSpecial VARCHAR(35),
+    shirtSize VARCHAR(35),
+    shirtSpecial VARCHAR(35),
+    socksSize VARCHAR(35),
+    socksSpecial VARCHAR(35),
+    underwearSize VARCHAR(35),
+    diaperSize VARCHAR(35),
+    uodSpecial VARCHAR(35),
+    uniIO VARCHAR(35),
+    uniSocks VARCHAR(35),
+    uniDiapers VARCHAR(35),
     PRIMARY KEY(coid),
     FOREIGN KEY(orderedById) REFERENCES PersonOrdering(id),
-    FOREIGN KEY(orderedForId) REFERENCES Childeren(cid)
+    FOREIGN KEY(orderedForId) REFERENCES Children(cid)
 );
 
 #for quick lookup when querying if there are any people in a house ordering clothes

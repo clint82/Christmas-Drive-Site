@@ -15,6 +15,8 @@
         private $addPersonToHousehold = "INSERT INTO peopleInHouse (pid,aid) VALUES (?,?)";
         private $getAllTables = "SHOW TABLES FROM Christmas";
         private $addHeadOfHousehold = "INSERT IGNORE INTO HeadOfHousehold (hid, pid) VALUES (?,?)";
+        private $addChildString = "INSERT INTO Children (firstName, lastName, age) VALUES (?,?,?)";
+        private $addClothingOrderString = "INSERT INTO ClothingOrders (gender, infantOutfitSize, infantOutfitSpecial, jeansSize, jeansSpecial, shirtSize, shirtSpecial, socksSize, socksSpecial, underwearSize, diaperSize, uodSpecial, uniIO, uniSocks, uniDiapers) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
         private $addPhoneType = "INSERT INTO PhoneType (description) VALUES (?)";
         private $addFoodOrder = "INSERT INTO FoodOrder (aid, numPeople, needDelievery) VALUES (?, ?, ?)";
         private $getAllClothingOrdersInAddress = "SELECT co.coid FROM ClothingOrders co, peopleInHouse pih WHERE co.orderedById = pih.pid AND pih.aid = (?)";
@@ -216,6 +218,20 @@
             $params = $this->trimParameters($params,"Addresses");
             print_r($params);
             $returner = $this->makeStatementSelect($this->findAddedAddressString, $params);
+            $this->endStatement();
+            return $returner;
+        }
+        
+        public function addClothingOrder($params)
+        {
+            $returner = $this->makeStatementInsert($this->addClothingOrderString, $params);
+            $this->endStatement();
+            return $returner;
+        }
+        
+        public function addChild($params)
+        {
+            $returner = $this->makeStatementInsert($this->addChildString, $params);
             $this->endStatement();
             return $returner;
         }
