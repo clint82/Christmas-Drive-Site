@@ -83,6 +83,8 @@
 
             session_start();
             $_SESSION["attemptedOrderType"] = $orderingFood ? "food" : "clothes";
+            $_SESSION["personId"];
+            $_SESSION["addressId"];
                     
             if($orderingFood)
             {
@@ -102,11 +104,13 @@
                     else
                     {
                         echo "Food order not added! food order has been made on the address " . $addressKey . "<br>";
+                        $_SESSION["errorType"] = "previouslyMadeFoodOrder";
                     }
                 }
                 else
                 {
                     echo "Clothing order found for person " . $personId . "<br>";
+                    $_SESSION["errorType"] = "previouslyMadeClothingOrder";
                     //redirect to login to allow for food and clothing
                 }
             }
@@ -122,10 +126,12 @@
                 $isClothingOrderForPerson = count($clothingOrderForPerson) > 0 ? true:false;
                 if($isFoodOrderForHouse)
                 {
+                    $_SESSION["errorType"] = "previouslyMadeFoodOrder";
                     echo "There is already someone who made a food order for this house<br>";
                 }
                 else if($isClothingOrderForPerson)
                 {
+                    $_SESSION["errorType"] = "previouslyMadeClothingOrder";
                     echo "This person already made a clothing order<br>";
                 }
                 else
