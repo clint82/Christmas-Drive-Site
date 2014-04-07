@@ -39,21 +39,22 @@ if( !empty($_POST) ) {
 				<ul>
 					<li>
 						<label for="firstname">First Name:</label>
-						<input type="firstname" name="firstname" id="firstname" required="required"> 
+						<input type="firstname" name="firstname" id="firstname" required="required"/> 
 					</li>
 					<li>
 						<label for="lastname">Last Name:</label>
-						<input type="lastname" name="lastname" id="lastname" required="required">
+						<input type="lastname" name="lastname" id="lastname" required="required"/>
 						
 					</li>
 					<li>
 						<label for="initials">Initials:</label>
-						<input type="initials" name="initials" id="initials" required="required">
+						<input type="initials" name="initials" id="initials" required="required"/>
 					</li>
 					<li>
 						<label for="email">Email:</label>
-						<input type="text" name="email" id="email" value="johnsmith@gmail.com" required="required">
+						<input type="text" name="email" id="email" required="required"/>
 						<?php if( isset($result) && $result !== true && $result['email'] ) echo '<h5 class="alert"> ' . $result['email'] . '</h5>'; ?>
+						
 					</li>
 				</ul>
 			</fieldset>

@@ -1,9 +1,9 @@
 <?php
-
+	require 'constants.php';
     class databaseAcessor
     {
         private $username = "root";
-        private $password = "password";
+        private $password = "10TO1r@tio";
         private $dbName = "Christmas";
         private $nameQueryString = "SELECT * FROM PersonOrdering p WHERE p.lastName LIKE ?";
         private $addFullPersonString = "INSERT INTO PersonOrdering (firstName, lastName, email, primaryPhoneId, primaryPhoneNum, secondaryPhoneId, secondaryPhoneNum, languageId, notes) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
@@ -18,9 +18,10 @@
         private $addChildString = "INSERT INTO Children (firstName, lastName, age, childID, childIDNo) VALUES (?,?,?)";
         private $addClothingOrderString = "INSERT INTO ClothingOrders (gender, infantOutfitSize, infantOutfitSpecial, jeansSize, jeansSpecial, shirtSize, shirtSpecial, socksSize, socksSpecial, underwearSize, diaperSize, uodSpecial, uniIO, uniSocks, uniDiapers, notes, checklist, completedBy) VALUES (? ,? ,? ,?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
         private $addPhoneType = "INSERT INTO PhoneType (description) VALUES (?)";
-        private $addFoodOrder = "INSERT INTO FoodOrder (aid, numPeople, needDelievery) VALUES (?, ?, ?)";
+        private $addChristmasFoodOrderString = "INSERT INTO ChristmasFoodOrder (aid, numPeople, needDelievery) VALUES (?, ?, ?)";
+		private $addThanksGivingFoodOrderString = "INSERT INTO ThanksgivingFoodOrder (aid, numPeople, needDelievery) VALUES (?, ?, ?)";
         private $getAllClothingOrdersInAddress = "SELECT co.coid FROM ClothingOrders co, peopleInHouse pih WHERE co.orderedById = pih.pid AND pih.aid = (?)";
-        private $getNumberOfPeopleInFoodOrder = "SELECT fo.numPeople FROM FoodOrder fo WHERE fo.aid = (?)";
+        private $getNumberOfPeopleInFoodOrder = "SELECT fo.numPeople FROM ChristmasFoodOrder fo WHERE fo.aid = (?)";
         private $getClothingOrderForPerson = "SELECT co.coid FROM ClothingOrders co WHERE co.orderedById = (?)";
         private $getMemberRoleWithUsernameAndPassword = "SELECT role FROM Members WHERE (username, password) = (?, ?)";
         private $hostname;
@@ -30,7 +31,8 @@
         
         public function __construct()
         {
-            $this->hostname = gethostname();
+            //$this->hostname = gethostname();
+			$hostname = 'localhost';
             
             //manually storing max string lengths (performance will be affected)
             $this->maxStringLengths = array();
@@ -278,10 +280,16 @@
             return $this->makeStatementSelect($this->getNumberOfPeopleInFoodOrder, array($addressKey));
         }
         
-        public function addFoodOrder($addressKey, $numPeople, $needDelivery)
+        public function addChristmasFoodOrder($addressKey, $numPeople, $needDelivery)
         {
-            $this->makeStatementInsert($this->addFoodOrder, array($addressKey, $numPeople, $needDelivery));
+            $this->makeStatementInsert($this->addChristmasFoodOrderString, array($addressKey, $numPeople, $needDelivery));
         }
+		
+		public function addThanksgivingFoodOrder($addressKey, $numPeople, $needDelivery)
+        {
+            $this->makeStatementInsert($this->addThanksGivingFoodOrderString, array($addressKey, $numPeople, $needDelivery));
+        }
+		
         public function getClothingOrderForPerson($personId)
         {
             return $this->makeStatementSelect($this->getClothingOrderForPerson , array($personId));
@@ -291,34 +299,36 @@
         {
             return $this->makeStatementSelect($this->getMemberRoleWithUsernameAndPassword, array($username, $passwordHash));
         }
-        
-        public function verify_username_and_pass($params) 
-        {
+
+		//verifies user name and password
+		public function verify_username_and_pass($params) {
 				
 			$stmt = "SELECT * FROM members WHERE username = ? AND password = ? LIMIT 1;";
 			$result = $this->makeStatementSelect($stmt, $params);
-			print_r($result);
 			return $result; 
-		}		
+		}
 
-		public function validate_new_user($username, $email, $access_code) 
-		{
+		//checks username, password and access code are correct when volunteer is signing up
+		public function validate_new_user($username, $email, $access_code) {
 		
+			//query for username and email
 			$query_1 = 'SELECT username FROM members WHERE username = ?';
 			$query_2 = 'SELECT username FROM members WHERE email = ?';
 			
-			$errors = array( 'username' => null, 'email' => null, 'access_code' => null);	//associative array containing all possible errors we could find with initial values set to null.
-			$found_error = false;															// a boolean variable that tells us if we found an error
+			//array of possible errors we can return
+			$errors = array( 'username' => null, 'email' => null, 'access_code' => null);	
+			$found_error = false;														
 			
 			//check username is unique
-			$result = $this->makeStatementInsert( $query_1, array($username) );
+			$result = $this->makeStatementSelect( $query_1, array($username) );
 			if( !empty($result) ) {
 				$errors['username'] = 'That user name already exists.';
 				$found_error = true;
+				
 			}
 			
 			//check email is unique
-			$result = $this->makeStatementInsert( $query_2, array($email) );
+			$result = $this->makeStatementSelect( $query_2, array($email) );
 			if( !empty($result) ) {
 				$errors['email'] =  'This email already has an account.';
 				$found_error = true;
@@ -334,13 +344,13 @@
 			if($found_error) {
 				return $errors;
 			}
-			
+
 			//otherwise just return true
-			return true;
+			return false;
 		}
 		
-		public function insert_user($params) 
-		{
+		//inserts new volunteer into membership database so they can sign up
+		public function insert_user($params) {
 			$stmt = "INSERT INTO members (fname, lname, initials, email, username, password, role) VALUES( ?, ?, ?, ?, ?, ?, ?);";
 			$result = $this->makeStatementInsert($stmt, $params);
 

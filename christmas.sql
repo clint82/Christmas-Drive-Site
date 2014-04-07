@@ -159,7 +159,7 @@ CREATE TABLE HeadOfHousehold
 );
 
 #Represents a simple food order
-CREATE TABLE FoodOrder
+CREATE TABLE ChristmasFoodOrder
 (
     aid INT,
     numPeople INT,
@@ -167,3 +167,15 @@ CREATE TABLE FoodOrder
     PRIMARY KEY (aid),
     FOREIGN KEY (aid) REFERENCES Addresses(aid)
 );
+
+#Represents a simple food order
+CREATE TABLE ThanksgivingFoodOrder
+(
+    aid INT,
+    numPeople INT,
+    needDelievery BOOL NOT NULL DEFAULT 0,
+    PRIMARY KEY (aid),
+    FOREIGN KEY (aid) REFERENCES Addresses(aid)
+);
+
+

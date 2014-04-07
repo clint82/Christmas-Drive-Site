@@ -73,4 +73,14 @@ function chooseOption()
     {
         setAction(formElement, "editInfo.php");
     }
+	
+	function handleFamFields(){
+	
+		if( document.getElementById("householdStatus").value == 2 ) {
+			document.getElementById("famFields").style.display = "block";
+		} else if(document.getElementById("householdStatus").value == 1){
+			document.getElementById("famFields").style.display = "none";
+		}
+		
+	}
 }

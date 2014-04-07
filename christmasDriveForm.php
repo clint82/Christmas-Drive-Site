@@ -168,6 +168,8 @@ function chooseOption()
     }
 }
 
+
+
 function disselectAddress()
 {
     var elementOfAddressSelect = document.getElementById("addressSearchContainer");
@@ -189,12 +191,26 @@ function disselectAddress()
 		apartmentInfoDiv.style.display = "none";
 	}
 	
+
 }
 
+function displayByValue(triggerElem, target, val) {
+	if( document.getElementById(triggerElem).value == val ) {
+		document.getElementById(target).style.display = "block";
+	} else {
+		document.getElementById(target).style.display = "none";
+	}
+}
 
+function handleFamFields(){
 
-
-
+	if( document.getElementById("householdStatus").value == 2 ) {
+		document.getElementById("famFields").style.display = "block";
+	} else {
+		document.getElementById("famFields").style.display = "none";
+	}
+	
+}
 
 // [END region_geolocation]
 
@@ -245,24 +261,56 @@ function disselectAddress()
       <form name="addressBar" action="inputAllInformation.php" method="POST" onsubmit="return false;">
          <div id="residenceVerification" name="residenceVerification">
             Residence Verification<br>
-            <input type="radio" name="residency" value="Yes">Yes<br>
-            <input type="radio" name="residency" value="No">No<br>
+            <input type="radio" name="residency" id="residencyYes" value="Yes" onclick="displayByValue('residencyYes', 'resVerifNote', 'No')">Yes<br>
+            <input type="radio" name="residency" id="residencyNO" value="No" onclick="displayByValue('residencyNO', 'resVerifNote', 'No')">No<br>
          </div>
+		 
+		 <div id="resVerifNote" style="display: none">
+			<input type="text" id="residencyNote" maxlength="50" >
+		 </div>
+		 
          <div id="householdStatusDiv" name="householdStatusDiv">
             Type of Household<br>
-            <select name="householdStatus">
+            <select name="householdStatus" id="householdStatus" onchange="handleFamFields()">
                <option value=1>Single household</option>
                <!-- selected="selected" if value == correct value-->
                <option value=2>Combined household</option>
             </select>
             <br>
          </div>
+		 
          <div id="firstNameDiv" name="firstNameDiv">
             First Name <input type="text" id="firstName" name="firstName" onkeyup="highlightNameBoxIfNotValidated('firstName')"><br>
          </div>
+		 
          <div id="lastNameDiv" name="lastNameDiv">
             Last Name <input type="text" id="lastName" name="lastName" onkeyup="highlightNameBoxIfNotValidated('lastName')"><br>
          </div>
+		 
+		 <ul id="famFields" style="display:none">
+			<h4>For each additional family enter the first and last name of the primary member:</h4>
+			<li>
+			First Name <input type="text" id="firstName1" name="firstName1" onkeyup="highlightNameBoxIfNotValidated('firstName1')">
+			Last Name <input type="text" id="lastName1" name="lastName1" onkeyup="highlightNameBoxIfNotValidated('lastName1')">
+			</li>
+			<li>
+			First Name <input type="text" id="firstName2" name="firstName2" onkeyup="highlightNameBoxIfNotValidated('firstName2')">
+			Last Name <input type="text" id="lastName2" name="lastName2" onkeyup="highlightNameBoxIfNotValidated('lastName2')">
+			</li>
+			<li>
+			First Name <input type="text" id="firstName3" name="firstName3" onkeyup="highlightNameBoxIfNotValidated('firstName3')">
+			Last Name <input type="text" id="lastName3" name="lastName3" onkeyup="highlightNameBoxIfNotValidated('lastName3')">
+			</li>
+			<li>
+			First Name <input type="text" id="firstName4" name="firstName4" onkeyup="highlightNameBoxIfNotValidated('firstName1')">
+			Last Name <input type="text" id="lastName4" name="lastName4" onkeyup="highlightNameBoxIfNotValidated('lastName4')">
+			</li>
+			<li>
+			First Name <input type="text" id="firstName5" name="firstName5" onkeyup="highlightNameBoxIfNotValidated('firstName5')">
+			Last Name <input type="text" id="lastName5" name="lastName5" onkeyup="highlightNameBoxIfNotValidated('lastName5')">
+			</li>
+		 </ul>
+		 
          <div id="emailDiv" name="emailDiv">
             Email <input type="text" id="email" name="email" onkeyup="highlightEmailBoxIfNotValidated('email')"><br>
          </div>
@@ -328,6 +376,7 @@ function disselectAddress()
             Delivery (special request only)<br>
             <input type="radio" name="deleivery" value="Yes">Yes<br>
             <input type="radio" name="deleivery" value="No">No<br>
+			<h5>See Anne or Maryann if yes</h5>
          </div>
          <div id="foodOrClothingDiv" name="foodOrClothingDiv">
             Christmas Store selection<br>

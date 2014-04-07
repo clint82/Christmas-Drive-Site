@@ -55,6 +55,26 @@
             {
                 echo "Failed to add person";
             }
+			
+			//ADD ADDITIONAL FAMILY MEMBERS
+			$fam1 = array( 'firstname' => $_POST['firstName1'], 'lastname' => $_POST['lastName1']);
+			$fam2 = array( 'firstname' => $_POST['firstName2'], 'lastname' => $_POST['lastName2']);
+			$fam3 = array( 'firstname' => $_POST['firstName3'], 'lastname' => $_POST['lastName3']);
+			$fam4 = array( 'firstname' => $_POST['firstName4'], 'lastname' => $_POST['lastName4']);
+			$fam5 = array( 'firstname' => $_POST['firstName5'], 'lastname' => $_POST['lastName5']);
+			
+			$families = array( 0 => $fam1, 1 => $fam2, 2 => $fam3, 3 => $fam4, 4 => $fam5);
+			$famIds = array();
+			$i = 0;
+			foreach($families as $fam) {
+				if( !empty($fam['firstname']) ) {
+					$person = array($fam['firstname'], $fam['firstname'], $email, $primaryPhoneId, $primaryPhoneNum, $secondaryPhoneId, $secondaryPhoneNum, $languageId, $notes);
+					$personId = $dba->addPerson($person);
+					array_push($famIds, $personId);
+				}
+				
+				$i++;
+			}
             
             $params = array();
             if($_POST["addressType"] == 'apartment')
@@ -69,7 +89,16 @@
             $params[] = $_POST["locality"];
             $params[] = $_POST["postal_code"];
             $addressKey = $dba->addAddress($params);
+			
+			//ADD HEAD OF HOUSEHOLD TO HOUSE
             $something = $dba->addPersonToHouse($personId,$addressKey);
+			
+			//ADD OTHER FAMILY MEMBERS TO HOUSE
+			foreach($famIds as $pid) {
+				$dba->addPersonToHouse($pid,$addressKey);
+			}
+			
+			
             //insert ignore into head of household
             $dba->addHeadOfHouseHoldIfNotSet($addressKey, $personId);
             $numPeople = $_POST["numberOfFamilyMembers"];
@@ -85,6 +114,11 @@
             $_SESSION["attemptedOrderType"] = $orderingFood ? "food" : "clothes";
             $_SESSION["personId"];
             $_SESSION["addressId"];
+			
+			$errorOnPage = true;
+			
+			//ADD TO THANKSGIVING FOOD ORDER
+			$dba->addThanksgivingFoodOrder($addressKey, $numPeople, $needDelivery);
                     
             if($orderingFood)
             {
@@ -96,11 +130,14 @@
                     echo "The number of people at this house is currently " . $dba->getNumPeopleInFoodOrder($addressKey) . "<br>";
                     //if no previous food order, insert ignore into food order
                     $numFoodOrdersForAddress = count($dba->getNumPeopleInFoodOrder($addressKey));
+					
+					//no error
                     if($numFoodOrdersForAddress==0)
                     {
                         echo "No food order found for this address, adding food order" . "<br>";
-                        $dba->addFoodOrder($addressKey, $numPeople, $needDelivery);
+                        $dba->addChristmasFoodOrder($addressKey, $numPeople, $needDelivery);
                         header("Location: christmasDriveForm.php");
+						$errorOnPage = false;
                     }
                     else
                     {
@@ -144,7 +181,7 @@
                 }
             }
             
-            if($personId && $languageId && $addressKey)
+            if($personId && $languageId && $addressKey && $errorOnPage)
             {
                 echo "success";
                 echo "value is " . $something;

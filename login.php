@@ -1,7 +1,7 @@
 <?php
 
 session_start();							//create a session
-require_once 'membership.php';		//indicate required files
+require_once 'membership.php';				//indicate required files
 $membership = new Membership();				//create new Membership object
 
 //Check if user has logged out

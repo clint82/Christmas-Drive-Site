@@ -1,5 +1,5 @@
 <?php
-require_once 'classes/membership.php';
+require_once 'membership.php';
 $membership = new Membership();
 
 //confirm that user has logged in before displaying page(if they have not redirect to login page)
